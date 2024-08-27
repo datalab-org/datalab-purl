@@ -1,22 +1,38 @@
 ---
 - name: Run datalab purl service
   hosts: all
+  gather_facts: false
 
-  vars_files:
-    - secrets_file.enc
+  vars:
+    ghcr_token: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      36393863393538363831623332626635343536306436323664313064633063366666373535326161
+      3339393835613730626239356332343533623765393930660a303863393362323133396661613234
+      37303863313065643861326264653961373732323561306337386535633365333838376163363534
+      6466386366303237320a633539373861323639613832643534646132336635643863623234613539
+      64333837303563393665323362336636336261376330656262656138363865346333356661386139
+      3735353434616664366332633934666163393061653432323765
+    ghcr_user: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      63396362623734353764653539373432303533383962333035656634643132353135326336633536
+      6365343634633838386265303639623236663366393463650a376635393066353136636131656530
+      31666463343333333533373136323832313764636634316538383332386130613464353030316439
+      6462646562333131370a303366366462633534643061666138303030353161333665303261396565
+      3664
 
   tasks:
     - name: Start Docker service
-      service:
+      ansible.builtin.service:
         name: docker
         state: started
-        enabled: yes
+        enabled: true
 
     - name: Login to ghcr.io
       community.docker.docker_login:
+        state: present
         registry_url: ghcr.io
-        username: ${{ ghcr_user }}
-        password: ${{ ghcr_token }}
+        username: "{{ ghcr_user }}"
+        password: "{{ ghcr_token }}"
 
     - name: Get datalab-purl container
       community.docker.docker_image:
@@ -26,8 +42,8 @@
     - name: Launch container
       community.docker.docker_container:
         name: datalab-purl
-        image: datalab-org/datalab-purl:latest
+        image: ghcr.io/datalab-org/datalab-purl:latest
         state: started
         ports:
-          - "80:80"
-          - "443:443"
+          - 80:80
+          - 443:443
