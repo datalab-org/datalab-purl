@@ -7,6 +7,7 @@ repos:
     hooks:
       - id: check-symlinks
       - id: check-yaml
+        exclude: ansible/playbook.yml
       - id: check-json
       - id: destroyed-symlinks
       - id: end-of-file-fixer
@@ -27,3 +28,4 @@ repos:
     hooks:
       - id: ansible-lint
         additional_dependencies: [ansible]
+        args: [--fix]
