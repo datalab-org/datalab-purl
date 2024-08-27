@@ -23,11 +23,12 @@ COPY --from=federation $COMBINED_FILENAME $COMBINED_FILENAME
 RUN make build-nginx-config
 
 FROM nginx:1.27-alpine AS nginx
-RUN mkdir -p /etc/nginx/include
+RUN mkdir -p /etc/nginx/include && mkdir -p /var/www/index.html
 COPY --from=builder /app/nginx/ssl /etc/nginx/ssl
 COPY --from=builder /app/nginx/include/providers-nginx.conf /etc/nginx/include/
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/include/ssl-nginx.conf /etc/nginx/include/ssl-nginx.conf
+COPY ./static/index.html /var/www/index.html
 RUN rm -f /etc/nginx/conf.d/default.conf
 EXPOSE 80
 EXPOSE 443
