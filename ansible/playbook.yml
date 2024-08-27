@@ -44,6 +44,7 @@
         name: datalab-purl
         image: ghcr.io/datalab-org/datalab-purl:latest
         state: started
+        recreate: true
         ports:
           - 80:80
           - 443:443
