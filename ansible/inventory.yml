@@ -1,0 +1,6 @@
+---
+datalab-purl:
+  hosts:
+    purl.datalab-org.io:
+      ansible_become_method: sudo
+      ansible_user: root

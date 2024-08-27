@@ -1,0 +1,33 @@
+---
+- name: Run datalab purl service
+  hosts: all
+
+  vars_files:
+    - secrets_file.enc
+
+  tasks:
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Login to ghcr.io
+      community.docker.docker_login:
+        registry_url: ghcr.io
+        username: ${{ ghcr_user }}
+        password: ${{ ghcr_token }}
+
+    - name: Get datalab-purl container
+      community.docker.docker_image:
+        name: ghcr.io/datalab-org/datalab-purl:latest
+        source: pull
+
+    - name: Launch container
+      community.docker.docker_container:
+        name: datalab-purl
+        image: datalab-org/datalab-purl:latest
+        state: started
+        ports:
+          - "80:80"
+          - "443:443"
