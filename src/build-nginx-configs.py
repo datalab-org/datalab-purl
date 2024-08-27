@@ -18,7 +18,9 @@ include_dir.mkdir(parents=True, exist_ok=True)
 with open(COMBINED_FILE) as f:
     provider_list = safe_load(f)
 
-template = Template((Path(__file__).parent / "templates" / "nginx-provider.conf.j2").read_text())
+template = Template(
+    (Path(__file__).parent / "templates" / "nginx-provider.conf.j2").read_text()
+)
 
 with open(include_dir / "providers-nginx.conf", "w") as f:
-        f.write(template.render(providers=provider_list))
+    f.write(template.render(providers=provider_list))
