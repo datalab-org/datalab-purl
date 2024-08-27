@@ -1,5 +1,5 @@
 ---
-datalab-purl:
+datalab_purl:
   hosts:
     purl.datalab-org.io:
       ansible_become_method: sudo

@@ -35,9 +35,9 @@
         password: "{{ ghcr_token }}"
 
     - name: Get datalab-purl container
-      community.docker.docker_image:
+      community.docker.docker_image_pull:
         name: ghcr.io/datalab-org/datalab-purl:latest
-        source: pull
+        pull: always
 
     - name: Launch container
       community.docker.docker_container:
