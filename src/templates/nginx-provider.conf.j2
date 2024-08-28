@@ -1,6 +1,6 @@
 {% for provider in providers %}
 location ~ /{{ provider['id'] }}:(.+)$ {
-    return 301 {{ provider['canonical_url'] }}/items/$1;
+    return 301 {{ provider['api_url'] }}/items/$1?redirect-to-ui=true;
 }
 
 {% endfor %}
