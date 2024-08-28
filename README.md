@@ -1,7 +1,7 @@
 # datalab-purl
 
 This repository contains a simple resolver for links to entries in different
-[*datalab*](https://github.com/datalab-org/datalab) instances that are part of the 
+[*datalab*](https://github.com/datalab-org/datalab) instances that are part of the
 [*datalab* federation](https://github.com/datalab-org/datalab-federation).
 
 The latest *datalab* federation list is pushed to ghcr.io and this repository
