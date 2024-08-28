@@ -1,0 +1,44 @@
+---
+name: Deploy container
+on:
+  workflow_dispatch:
+  workflow_call:
+jobs:
+  deploy:
+    name: Deploy container to purl.datalab-org.io
+    runs-on: ubuntu-latest
+    environment:
+      name: deploy
+      url: https://purl.datalab-org.io
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up cached uv
+        uses: hynek/setup-cached-uv@v2
+
+      - name: Install ansible
+        working-directory: ansible
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+
+      - name: Install ansible-galaxy rules
+        working-directory: ansible
+        run: |
+          source .venv/bin/activate
+          ansible-galaxy install -r requirements.yml
+
+      - name: Run playbook
+        working-directory: ansible
+        run: |
+          source .venv/bin/activate
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.ANSIBLE_VAULT_KEY }}" > ~/.vault_pass.txt
+          ansible-playbook \
+            -i inventory.yml playbook.yml \
+            --vault-password-file ~/.vault_pass.txt \
+            --private-key ~/.ssh/id_ed25519
