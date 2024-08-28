@@ -33,11 +33,16 @@ jobs:
 
       - name: Run playbook
         working-directory: ansible
+        env:
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ansible_vault_key: ${{ secrets.ANSIBLE_VAULT_KEY }}
+          server_public_key: ${{ secrets.SERVER_PUBLIC_KEY }}
         run: |
           source .venv/bin/activate
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          echo "${{ secrets.ANSIBLE_VAULT_KEY }}" > ~/.vault_pass.txt
+          echo "$ssh_private_key" > ~/.ssh/id_ed25519
+          echo "$ansible_vault_key" > ~/.vault_pass.txt
+          echo "$server_public_key" > ~/.ssh/known_hosts
           ansible-playbook \
             -i inventory.yml playbook.yml \
             --vault-password-file ~/.vault_pass.txt \
