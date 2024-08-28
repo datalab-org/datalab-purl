@@ -43,7 +43,6 @@ jobs:
           echo "$ssh_private_key" > ~/.ssh/id_ed25519
           echo "$ansible_vault_key" > ~/.vault_pass.txt
           echo "$server_public_key" > ~/.ssh/known_hosts
-          ssh purl.datalab-io.org 'echo "Connected to $(hostname)"'
           ansible-playbook \
             -i inventory.yml playbook.yml \
             --vault-password-file ~/.vault_pass.txt \
