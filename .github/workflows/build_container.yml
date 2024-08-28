@@ -105,3 +105,4 @@ jobs:
     needs: [publish_container_image]
     if: github.repository_owner == 'datalab-org' && github.event_name == 'push'
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
