@@ -10,7 +10,50 @@
     <style>
         body {
             font-family: 'Figtree', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #ffc105;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+            padding: 30px;
             background-color: white;
+            border: 3px solid #000000; /* Changed to black border */
+            box-shadow: 32px 32px 0px 0px rgba(139, 69, 19, 0.75); /* Changed to brown shadow */
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        h2 {
+            color: #34495e;
+        }
+        a {
+            color: #d19d00;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline wavy #d19d00;
+            color: #a8630f;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        i {
+            font-style: italic;
+        }
+        .fa-icon {
+            margin-right: 5px;
+            width: 20px;
+            text-align: center;
         }
         .github-link {
             color: #333;
@@ -19,9 +62,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-        .github-link:hover {
-            color: #0366d6;
         }
         .repo-name {
             font-family: monospace;
@@ -41,7 +81,7 @@
             <div class="col-md-12 text-center">
                 <h1 class="mb-4"><i>datalab</i> persistent URL resolver</h1>
                 <div class="mb-4">
-                    <p id="description" class="border p-3 rounded">
+                    <p id="description" class="p-3 rounded">
                         This subdomain is used to redirect prefixed <i>datalab</i> item
                         IDs to the corresponding registered instance in the <i>datalab</i> federation.
                     </p>
