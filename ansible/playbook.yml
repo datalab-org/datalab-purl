@@ -3,6 +3,11 @@
   hosts: all
   gather_facts: false
 
+  #  roles:
+  #    - role: ssl
+  #      name: Setup certbot for automated renewal
+  #      tags: [setup]
+
   vars:
     ghcr_token: !vault |
       $ANSIBLE_VAULT;1.1;AES256
@@ -34,6 +39,14 @@
         username: "{{ ghcr_user }}"
         password: "{{ ghcr_token }}"
 
+    - name: Create a Docker volume for certbot-conf (mounted to /etc/letsencrypt)
+      community.docker.docker_volume:
+        name: certbot-conf
+
+    - name: Create a Docker volume for certbot-www (mounted to /var/www/certbot)
+      community.docker.docker_volume:
+        name: certbot-www
+
     - name: Get datalab-purl container
       community.docker.docker_image_pull:
         name: ghcr.io/datalab-org/datalab-purl:latest
@@ -44,6 +57,9 @@
         name: datalab-purl
         image: ghcr.io/datalab-org/datalab-purl:latest
         state: started
+        volumes:
+          - certbot-conf:/etc/letsencrypt
+          - certbot-www:/var/www/certbot
         recreate: true
         ports:
           - 80:80

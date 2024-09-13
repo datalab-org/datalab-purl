@@ -4,3 +4,4 @@ datalab_purl:
     purl.datalab-org.io:
       ansible_become_method: sudo
       ansible_user: root
+      url: purl.datalab-org.io
