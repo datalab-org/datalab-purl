@@ -7,13 +7,8 @@
 FROM ghcr.io/datalab-org/datalab-federation:latest AS federation
 
 FROM python:3.12-alpine AS builder
+RUN apk add --no-cache make
 ARG COMBINED_FILENAME="/app/combined.yaml"
-RUN apk add --no-cache make openssl
-RUN mkdir -p /app/nginx/ssl && \
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /app/nginx/ssl/nginx.key \
-    -out /app/nginx/ssl/nginx.crt \
-    -subj "/C=FI/ST=Uusimaa/L=Helsinki/O=Datalab/CN=purl.datalab-org.io"
 WORKDIR /app
 RUN pip install uv
 
@@ -24,7 +19,6 @@ RUN make build-nginx-config
 
 FROM nginx:1.27-alpine AS nginx
 RUN mkdir -p /etc/nginx/include && mkdir -p /var/www
-COPY --from=builder /app/nginx/ssl /etc/nginx/ssl
 COPY --from=builder /app/nginx/include/providers-nginx.conf /etc/nginx/include/
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./nginx/include/ssl-nginx.conf /etc/nginx/include/ssl-nginx.conf

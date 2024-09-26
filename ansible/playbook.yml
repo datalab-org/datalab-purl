@@ -3,10 +3,10 @@
   hosts: all
   gather_facts: false
 
-  #  roles:
-  #    - role: ssl
-  #      name: Setup certbot for automated renewal
-  #      tags: [setup]
+  roles:
+    - role: ssl
+      name: Setup certbot for automated renewal
+      tags: [setup]
 
   vars:
     ghcr_token: !vault |
@@ -57,6 +57,7 @@
         name: datalab-purl
         image: ghcr.io/datalab-org/datalab-purl:latest
         state: started
+        restart_policy: always
         volumes:
           - certbot-conf:/etc/letsencrypt
           - certbot-www:/var/www/certbot
