@@ -16,20 +16,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up cached uv
-        uses: hynek/setup-cached-uv@v2
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.4.x"
+          enable-cache: true
 
       - name: Install ansible
         working-directory: ansible
-        run: |
-          uv venv
-          uv pip install -r requirements.txt
+        run: uv pip install -r requirements.txt
 
       - name: Install ansible-galaxy rules
         working-directory: ansible
-        run: |
-          source .venv/bin/activate
-          ansible-galaxy install -r requirements.yml
+        run: uv run ansible-galaxy install -r requirements.yml
 
       - name: Run playbook
         working-directory: ansible
@@ -38,7 +37,6 @@ jobs:
           ansible_vault_key: ${{ secrets.ANSIBLE_VAULT_KEY }}
           server_public_key: ${{ secrets.SERVER_PUBLIC_KEY }}
         run: |
-          source .venv/bin/activate
           mkdir -p ~/.ssh
           echo "$ssh_private_key" > ~/.ssh/id_ed25519
           echo "$ansible_vault_key" > ~/.vault_pass.txt
@@ -46,7 +44,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/known_hosts
           chmod 600 ~/.vault_pass.txt
-          ansible-playbook \
+          uv run ansible-playbook \
             -i inventory.yml playbook.yml \
             --vault-password-file ~/.vault_pass.txt \
             --private-key ~/.ssh/id_ed25519
