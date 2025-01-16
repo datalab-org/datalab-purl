@@ -32,13 +32,6 @@
         state: started
         enabled: true
 
-    - name: Login to ghcr.io
-      community.docker.docker_login:
-        state: present
-        registry_url: ghcr.io
-        username: "{{ ghcr_user }}"
-        password: "{{ ghcr_token }}"
-
     - name: Create a Docker volume for certbot-conf (mounted to /etc/letsencrypt)
       community.docker.docker_volume:
         name: certbot-conf
