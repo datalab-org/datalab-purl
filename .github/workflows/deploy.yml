@@ -3,6 +3,9 @@ name: Deploy container
 on:
   workflow_dispatch:
   workflow_call:
+permissions:
+  contents: read
+  packages: write
 jobs:
   deploy:
     name: Deploy container to purl.datalab-org.io
