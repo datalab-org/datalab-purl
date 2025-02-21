@@ -1,6 +1,9 @@
 {% for provider in providers %}
 location ~ /{{ provider['id'] }}:(.+)$ {
-    return 301 {{ provider['api_url'] }}/items/$1?redirect-to-ui=true;
+    set $new_url {{ provider['api_url'] }}/items/$1?redirect-to-ui=true;
+    if ($arg_token) {
+        set $new_url "${new_url}&token=$arg_token";
+    }
+    return 301 $new_url;
 }
-
 {% endfor %}
