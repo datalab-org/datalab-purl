@@ -18,22 +18,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
         with:
+          version: "0.8.x"
           python-version: "3.12"
-
-      - name: Set up cached uv
-        uses: hynek/setup-cached-uv@v2
+          activate-environment: true
 
       - name: Install dependencies
         run: |
-          uv venv --python python3.12
           uv pip install pre-commit
 
       - name: Run pre-commit
         run: |
-          source .venv/bin/activate
           pre-commit run --all-files --show-diff-on-failure
 
   build_container_image:
