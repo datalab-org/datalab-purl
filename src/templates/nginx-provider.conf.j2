@@ -4,7 +4,7 @@ location ~ /{{ provider['id'] }}:(.+)$ {
     if ($arg_token) {
         set $new_url "${new_url}&token=$arg_token";
     }
-    elseif ($arg_at) {
+    if ($arg_at) {
         set $new_url "${new_url}&at=$arg_at";
     }
     return 301 $new_url;
