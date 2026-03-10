@@ -17,7 +17,7 @@ COPY src /app/src
 COPY --from=federation $COMBINED_FILENAME $COMBINED_FILENAME
 RUN make build-nginx-config
 
-FROM nginx:1.27-alpine AS nginx
+FROM nginx:1.29-alpine AS nginx
 RUN mkdir -p /etc/nginx/include && mkdir -p /var/www
 COPY --from=builder /app/nginx/include/providers-nginx.conf /etc/nginx/include/
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
