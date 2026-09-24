@@ -5,10 +5,11 @@
 # ]
 # ///
 
-from yaml import safe_load
-from jinja2 import Template
-from pathlib import Path
 import os
+from pathlib import Path
+
+from jinja2 import Template
+from yaml import safe_load
 
 COMBINED_FILE = os.environ.get("COMBINED_FILE", "/app/combined.yaml")
 
