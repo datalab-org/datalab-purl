@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -63,7 +64,7 @@ jobs:
 
   publish_container_image:
     name: Publish container on ghcr.io
-    if: github.repository_owner == 'datalab-org' && github.event_name == 'push'
+    if: github.repository_owner == 'datalab-org' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
@@ -96,6 +97,7 @@ jobs:
         with:
           context: .
           push: true
+          pull: true
           provenance: false
           cache-from: type=gha,scope=build,mode=max
           tags: ${{ steps.docker-metadata.outputs.tags }}
@@ -104,6 +106,6 @@ jobs:
   deploy_container:
     name: Deploy latest container to server
     needs: [publish_container_image]
-    if: github.repository_owner == 'datalab-org' && github.event_name == 'push'
+    if: github.repository_owner == 'datalab-org' && github.event_name != 'pull_request'
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
